@@ -1,36 +1,52 @@
 import math
 
+"""
+    Колпаков Н.С. 19-я группа. Вариант 2, Стартап, Нечёткий МАИ
+    
+    Стартап:
+        Онлайн-сервис для организации спортивных командных игр между любителями.
+    
+    Критерии:
+        - Стоимость реализации
+        - Внешний вид (интерфейс)
+        - Востребованность
+        - Масштабность
+"""
+
+
+# Шкала нечетких парных сравнений
 main_matrix = [
+
     [
         (1, 1, 1),
-        (4, 5, 6),
-        (3, 4, 5),
-        (6, 7, 8)
+        (3, 4, 6),
+        (4, 6, 7),
+        (5, 6, 9)
     ],
 
     [
-        (1/6, 1/5, 1/4),
+        (1/6, 1/4, 1/3),
         (1, 1, 1),
         (1/3, 1/2, 1/1),
-        (2, 3, 4)
+        (2, 3, 5)
     ],
 
     [
-        (1/5, 1/4, 1/3),
+        (1/7, 1/6, 1/4),
         (1, 2, 3),
         (1, 1, 1),
-        (2, 3, 4)
+        (2, 3, 6)
     ],
 
     [
-        (1/8, 1/7, 1/6),
-        (1/4, 1/3, 1/2),
-        (1/4, 1/3, 1/2),
+        (1/9, 1/6, 1/5),
+        (1/5, 1/3, 1/2),
+        (1/6, 1/3, 1/2),
         (1, 1, 1)
     ]
 ]
 
-geom_mean_ALL = []  # fuzzy geometric mean
+geom_mean_ALL = []  # Нечеткое геометрическое среднее
 
 for i in range(0, len(main_matrix)):
     geom_mean = []
@@ -60,7 +76,6 @@ print("Нечеткое геометрическое среднее: ", geom_mea
 # Множители для 2-ой таблицы:
 
 mnos_ALL = []  # Множители для 2-ой таблицы
-
 index = -1
 for j in range(len(geom_mean_ALL[0]) - 1, -1, -1):
     index += 1
@@ -74,7 +89,7 @@ for j in range(len(geom_mean_ALL[0]) - 1, -1, -1):
 print("Множители для весов: ", mnos_ALL)
 
 
-# Fuzzy weights:
+# Нечеткие веса:
 fuzzy_weights_ALL = []
 
 for i in geom_mean_ALL:
@@ -89,24 +104,21 @@ for i in geom_mean_ALL:
 print("Нечеткие веса: ", fuzzy_weights_ALL)
 
 
-# Clear weights:
-
-clear_weights_ALL = []  # "Чистые" веса
+# "Чистые" веса:
+clear_weights_ALL = []
 
 for i in fuzzy_weights_ALL:
-    # clear_weights_ALL = []
     a = 0
     for j in i:
         a += j
     clear_weights_ALL.append(
-        round(a / len(i), 3)
+        round(a / len(i), 3)  # Center of Area (COA)
     )
 
 print("Чистые веса: ", clear_weights_ALL)
 
 
-# Normalized weights:
-
+# Нормализованные веса:
 normalized_weights_ALL = []
 total_non_normal_weight = sum(clear_weights_ALL)
 
@@ -115,6 +127,6 @@ for i in clear_weights_ALL:
         round(i / total_non_normal_weight, 3)
     )
 
-print("Нормализированные веса: ", normalized_weights_ALL)
+print("Нормализованные веса: ", normalized_weights_ALL)
 
 
